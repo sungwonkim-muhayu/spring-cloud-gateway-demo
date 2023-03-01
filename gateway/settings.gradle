@@ -1,1 +1,10 @@
 rootProject.name = 'gateway'
+
+include 'cloud-gateway'
+findProject('cloud-gateway')?.name = 'cloud-gateway'
+
+include 'first-client'
+findProject('first-client')?.name = 'first-client'
+
+include 'second-client'
+findProject('second-client')?.name = 'second-client'

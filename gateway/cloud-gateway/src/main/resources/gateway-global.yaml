@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+#      default-filters:
+#        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+#        - name: LoggingFilter
+#          args:
+#            baseMessage: Spring Cloud Gateway Global Filter
+#            preLogger: false
+#            postLogger: false
+      x-forwarded:
+        enabled: true
+        host-append: true
+        port-append: false
+        prefix-append: true
+        order: 0

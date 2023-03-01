@@ -1,29 +1,77 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.9'
+    id 'org.springframework.boot' version '2.7.8'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-group = 'org.github.swsz2'
-version = '1.0.0'
-sourceCompatibility = '17'
+allprojects {
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+    repositories {
+        mavenCentral()
+    }
+
+    group 'org.github.swsz2'
+    version '1.0.0'
+    description = 'spring-cloud-gateway-demo'
+
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    ext {
+        set('springCloudVersion', "2021.0.5")
     }
 }
 
-repositories {
-    mavenCentral()
-}
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
+subprojects {
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
 
-tasks.named('test') {
-    useJUnitPlatform()
+    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+
+    dependencies {
+        //lombok-mapstruct-binding
+        implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+        implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+
+        // lombok
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly("org.projectlombok:lombok")
+        testAnnotationProcessor("org.projectlombok:lombok")
+
+        // mapstruct annotationProcessor
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.5")
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    processResources {
+        filesMatching("**/application*.yml") {
+            expand(project.properties)
+        }
+        filteringCharset 'UTF-8'
+    }
+
+    compileJava {
+        options.encoding = 'UTF-8'
+    }
+
+    javadoc {
+        options.encoding = 'UTF-8'
+    }
 }

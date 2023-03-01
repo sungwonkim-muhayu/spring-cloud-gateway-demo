@@ -1,0 +1,12 @@
+spring:
+  config:
+    import:
+      - classpath:gateway-global.yaml
+      - classpath:gateway-routes.yaml
+      - classpath:actuator.yaml
+
+server:
+  port: 8080
+logging:
+  level:
+    web: trace
